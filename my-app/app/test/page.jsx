@@ -196,7 +196,7 @@ const Page = () => {
               onClick={() => toggleColumn("item")}
               style={{ cursor: "pointer" }}
             >
-              item
+              item {cols.length}
             </th>
             {renderValueHeaders()}
           </tr>
