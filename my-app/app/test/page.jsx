@@ -7,11 +7,9 @@
 //     const [cols, setCols] =useState([])
 //     const [hiddenColumns, setHiddenColumns] = useState([]);
 
-
-
 //     useEffect(() => {
 // const getData = async () => {
- 
+
 // const { data: test, error } = await supabase.from("test").select("*");
 // if(error){
 //     console.log(error)
@@ -20,11 +18,9 @@
 //     console.log(test)
 //     setData(test);
 //     setCols(Object.keys(test[0]))
-    
+
 // }
 
-
-          
 // };
 //     getData();
 
@@ -129,6 +125,7 @@ import supabase from "@/supabase/config";
 
 const Page = () => {
   const [data, setData] = useState([]);
+  const [alldata, setAlldata] = useState([]);
   const [cols, setCols] = useState([]);
   const [hiddenColumns, setHiddenColumns] = useState([]);
 
@@ -137,12 +134,14 @@ const Page = () => {
       const { data: quotes, error } = await supabase
         .from("quotes")
         .select("*")
-        .eq("rfq_id", "2e84b2f7-1804-47c8-8b29-edd4f5d09f75")
+        .eq("rfq_id", "2e84b2f7-1804-47c8-8b29-edd4f5d09f75");
       if (error) {
         console.log(error);
       }
-      if (quotes ) {
+      if (quotes) {
         console.log(quotes);
+        setAlldata(quotes);
+
         setData(quotes[0].quote_items);
       }
     };
@@ -152,7 +151,7 @@ const Page = () => {
   useEffect(() => {
     const quotedQuantitiesObject = createObjectWithQuotedQuantities(data);
     setCols(Object.keys(quotedQuantitiesObject));
-    console.log(quotedQuantitiesObject);
+    // console.log(quotedQuantitiesObject);
   }, [data]);
 
   function createObjectWithQuotedQuantities(data) {
@@ -163,15 +162,6 @@ const Page = () => {
     return obj;
   }
 
-
-  // function createObjectWithQuotedQuantities(data) {
-  //   const obj = {};
-  //   data.forEach((quote) => {
-  //     obj[quote.quoted_quantity] = quote.quoted_quantity;
-  //   });
-  //   return obj;
-  // }
-
   const toggleColumn = (columnName) => {
     if (hiddenColumns.includes(columnName)) {
       setHiddenColumns(hiddenColumns.filter((col) => col !== columnName));
@@ -181,7 +171,9 @@ const Page = () => {
   };
 
   const renderValueHeaders = () => {
-    return data.map((dataItem, index) => <th key={index}>Per item price </th>);
+    return alldata.map((dataItem, index) => (
+      <th key={index}>Per item price </th>
+    ));
   };
 
   return (
@@ -190,8 +182,8 @@ const Page = () => {
         <thead>
           <tr>
             <th>comparison_parameter</th>
-            {data.map((dataItem, index) => (
-              <th key={index}>{dataItem.comparison_parameter}</th>
+            {alldata.map((dataItem, index) => (
+              <th key={index}>{dataItem.vendor_name}</th>
             ))}
           </tr>
         </thead>
@@ -214,13 +206,19 @@ const Page = () => {
                   </ul>
                 ))}
               </td>
-              {data.map((dataItem, index) => (
+              {/* {data.map((dataItem, index) => (
                 <td key={index}>
                   <ul>
-                    <li>{dataItem.comparison_parameter}</li>
-                    <li>{dataItem.items}</li>
-                    <li>{dataItem.net_landed_value}</li>
-                    <li>{dataItem.total_landed_value}</li>
+                    <li>{dataItem.quoted_price}</li>
+                  </ul>
+                </td>
+              ))} */}
+              {alldata.map((dataItem, index) => (
+                <td key={index}>
+                  <ul>
+                    {dataItem.quote_items.map((item, itemIndex) => (
+                      <li key={itemIndex}>{item.quoted_price}</li>
+                    ))}
                   </ul>
                 </td>
               ))}
