@@ -183,7 +183,10 @@ const Page = () => {
           <tr>
             <th>comparison_parameter</th>
             {alldata.map((dataItem, index) => (
-              <th key={index}>{dataItem.vendor_name}</th>
+              // <th key={index}>{dataItem.vendor_name}</th>
+              <th key={index}>
+                {dataItem.vendor_name ? dataItem.vendor_name : "Vendor"}
+              </th>
             ))}
           </tr>
         </thead>
