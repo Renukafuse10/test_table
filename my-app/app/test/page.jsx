@@ -236,22 +236,18 @@ const Page = () => {
                 <li>Gst</li>
               </ul>
             </td>
-            <td>
-              <ul>
-                <li>7200</li>
-                <li>1000</li>
-                <li>8198</li>
-                <li>160</li>
-              </ul>
-            </td>
-            <td>
-              <ul>
-                <li>7200</li>
-                <li>1000</li>
-                <li>8198</li>
-                <li>160</li>
-              </ul>
-            </td>
+            {alldata.map((dataItem, index) => (
+              <td key={index}>
+                <ul>
+                  <li>{dataItem.tcs}</li>
+                  <li>{dataItem.freight}</li>
+                  <li>
+                    {dataItem.total_amount ? dataItem.total_amount : "null"}
+                  </li>
+                  <li>{dataItem.gst}</li>
+                </ul>
+              </td>
+            ))}
           </tr>
         </tbody>
       </table>
